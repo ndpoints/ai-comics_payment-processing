@@ -1,0 +1,123 @@
+openapi: 3.0.0
+info:
+  description: API for managing payment transactions and subscriptions.
+  title: Payment Processing API
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /transactions:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Transaction"
+                type: array
+          description: A list of transactions
+      summary: Get all transactions
+      x-accepts:
+      - application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Transaction"
+        required: true
+      responses:
+        "201":
+          description: Transaction created successfully
+      summary: Create a new transaction
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /transactions/{transactionId}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: transactionId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: Transaction deleted successfully
+      summary: Delete a transaction by ID
+      x-accepts:
+      - application/json
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: transactionId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+          description: A single transaction
+      summary: Get a transaction by ID
+      x-accepts:
+      - application/json
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: transactionId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Transaction"
+        required: true
+      responses:
+        "200":
+          description: Transaction updated successfully
+      summary: Update a transaction by ID
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    Transaction:
+      example:
+        transaction_id: 0
+        amount: 1.4658129
+        updated_at: 2000-01-23T04:56:07.000+00:00
+        user_id: 6
+        created_at: 2000-01-23T04:56:07.000+00:00
+        currency: currency
+        status: status
+      properties:
+        transaction_id:
+          type: integer
+        user_id:
+          type: integer
+        amount:
+          format: float
+          type: number
+        currency:
+          type: string
+        status:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      type: object
